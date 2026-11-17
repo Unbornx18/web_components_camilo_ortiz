@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clínica Veterinaria - Fichas de Pacientes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f4f6f8;
+      color: #1e293b;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      max-width: 960px;
+      margin: 0 auto 2rem auto;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      color: #0f172a;
+      margin-bottom: 0.4rem;
+    }
+
+    header p {
+      color: #475569;
+      font-size: 0.95rem;
+    }
+
+    .grid-pacientes {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+  </style>
+  <!-- Script cargado en el head con atributo defer -->
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Control Clínico Veterinario</h1>
+    <p>Registro activo de pacientes y esquema de vacunación</p>
+  </header>
+
+  <!-- R1. Template propio: contiene estilos encapsulados y marcadores vacíos rellenados por JS -->
+  <template id="pet-card-template">
+    <style>
+      .card {
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-top: 4px solid #0d9488;
+        border-radius: 8px;
+        padding: 1.25rem;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        height: 100%;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.65rem;
+      }
+
+      .pet-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+      }
+
+      .pet-species {
+        background-color: #ccfbf1;
+        color: #115e59;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .pet-details {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        font-size: 0.92rem;
+        color: #334155;
+      }
+
+      .pet-details strong {
+        color: #0f172a;
+      }
+
+      .notes-box {
+        margin-top: auto;
+        background-color: #f8fafc;
+        border-left: 3px solid #64748b;
+        padding: 0.65rem 0.75rem;
+        font-size: 0.85rem;
+        color: #475569;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .notes-title {
+        display: block;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.2rem;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <article class="card">
+      <div class="card-header">
+        <h2 class="pet-name" data-field="nombre"></h2>
+        <span class="pet-species" data-field="especie"></span>
+      </div>
+
+      <ul class="pet-details">
+        <li><strong>Edad:</strong> <span data-field="edad"></span></li>
+        <li><strong>Próxima vacuna:</strong> <span data-field="vacuna"></span></li>
+      </ul>
+
+      <div class="notes-box">
+        <span class="notes-title">Observaciones clínicas</span>
+        <!-- R4. Slot para nota o descripción libre -->
+        <slot name="nota">Sin observaciones adicionales registradas.</slot>
+      </div>
+    </article>
+  </template>
+
+  <!-- R5. Reutilización: 3 instancias del componente con datos distintos -->
+  <main class="grid-pacientes">
+    <pet-card
+      nombre="Max"
+      especie="Canino"
+      edad="3 años"
+      proxima-vacuna="15 de diciembre de 2026">
+      <span slot="nota">Alérgico a la penicilina. Control de peso recomendado en la próxima visita.</span>
+    </pet-card>
+
+    <pet-card
+      nombre="Luna"
+      especie="Felino"
+      edad="1 año y 4 meses"
+      proxima-vacuna="22 de enero de 2027">
+      <span slot="nota">Esterilizada. Requiere refuerzo anual de triple felina y rabia.</span>
+    </pet-card>
+
+    <pet-card
+      nombre="Kiko"
+      especie="Ave (Ninfa)"
+      edad="8 meses"
+      proxima-vacuna="10 de febrero de 2027">
+      <!-- Esta instancia usa el contenido por defecto del slot -->
+    </pet-card>
+  </main>
+</body>
+</html>
